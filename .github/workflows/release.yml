@@ -22,7 +22,7 @@ jobs:
       namespace: client-gateway
       helm_release: client-gateway
       chart_path: ./k8s/client-gateway
-      deploy: false
+      deploy: true
     secrets:
       AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
 
