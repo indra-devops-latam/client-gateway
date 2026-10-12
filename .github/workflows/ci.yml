@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "feature/**"
+  pull_request:
+    branches:
+      - develop
+      - master
+    types: [
+      opened,
+      synchronize,
+      reopened
+    ]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    uses: indra-devops-latam/platform-ci-cd/.github/workflows/ci-nestjs.yml@develop
