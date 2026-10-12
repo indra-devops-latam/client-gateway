@@ -19,4 +19,35 @@ permissions:
 
 jobs:
   quality:
+    if: github.event_name == 'push'
     uses: indra-devops-latam/platform-ci-cd/.github/workflows/ci-nestjs.yml@develop
+
+  publish_deploy_dev:
+    if: github.event_name == 'pull_request' && github.base_ref == 'develop'
+    uses: indra-devops-latam/platform-ci-cd/.github/workflows/publish-deploy.yml@develop
+    with:
+      environment: dev
+      aws_region: ${{ vars.AWS_REGION }}
+      ecr_repository: ${{ vars.ECR_REPOSITORY_DEV }}
+      eks_cluster: ${{ vars.EKS_CLUSTER_DEV }}
+      namespace: client-gateway
+      helm_release: client-gateway
+      chart_path: ./k8s/client-gateway
+      deploy: false
+    secrets:
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+
+  publish_deploy_prod:
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    uses: indra-devops-latam/platform-ci-cd/.github/workflows/publish-deploy.yml@develop
+    with:
+      environment: prod
+      aws_region: ${{ vars.AWS_REGION }}
+      ecr_repository: ${{ vars.ECR_REPOSITORY_PROD }}
+      eks_cluster: ${{ vars.EKS_CLUSTER_PROD }}
+      namespace: client-gateway
+      helm_release: client-gateway
+      chart_path: ./k8s/client-gateway
+      deploy: false
+    secrets:
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
