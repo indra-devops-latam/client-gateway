@@ -18,12 +18,15 @@ permissions:
   contents: read
 
 jobs:
-  quality:
+  validate:
     if: github.event_name == 'push'
     uses: indra-devops-latam/platform-ci-cd/.github/workflows/ci-nestjs.yml@develop
 
   publish_deploy_dev:
     if: github.event_name == 'pull_request' && github.base_ref == 'develop'
+    permissions:
+      contents: read
+      id-token: write
     uses: indra-devops-latam/platform-ci-cd/.github/workflows/publish-deploy.yml@develop
     with:
       environment: dev
@@ -39,6 +42,9 @@ jobs:
 
   publish_deploy_prod:
     if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    permissions:
+      contents: read
+      id-token: write
     uses: indra-devops-latam/platform-ci-cd/.github/workflows/publish-deploy.yml@develop
     with:
       environment: prod
