@@ -17,7 +17,7 @@ spec:
   ports:
     - name: http
       port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: 3000
       protocol: TCP
 status:
   loadBalancer: {}
