@@ -8,6 +8,6 @@ describe('HealthCheckController', () => {
   });
 
   it('returns the gateway health status', () => {
-    expect(controller.healthCheck()).toBe('Client Gateway is up and running!!');
+    expect(controller.healthCheck()).toBe('Client Gateway is up and running!!!');
   });
 });
