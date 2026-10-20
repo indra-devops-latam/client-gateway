@@ -5,7 +5,7 @@ export class HealthCheckController {
 
   @Get()
   healthCheck() {
-    return 'Client Gateway is up and running!!';
+    return 'Client Gateway is up and running!!!';
   }
 
 }
