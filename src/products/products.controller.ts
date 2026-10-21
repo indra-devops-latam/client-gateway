@@ -21,27 +21,31 @@ import { UpdateProductDto } from './dto/update-product.dto';
 export class ProductsController {
   constructor(
     @Inject(NATS_SERVICE) private readonly client: ClientProxy,
-  ) {}
+  ) { }
 
   @Post()
   createProduct(@Body() createProductDto: CreateProductDto) {
-    return this.client.send(
-      { cmd: 'create_product' },
-      createProductDto,
-    );
+    return this.client.send('create_product', createProductDto)
+      .pipe(
+        catchError((error) => {
+          throw new RpcException(error);
+        })
+      );
   }
 
   @Get()
   findAllProducts(@Query() paginationDto: PaginationDto) {
-    return this.client.send(
-      { cmd: 'find_all_products' },
-      paginationDto,
-    );
+    return this.client.send('find_all_products', paginationDto)
+      .pipe(
+        catchError((error) => {
+          throw new RpcException(error);
+        })
+      );
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.client.send({ cmd: 'find_one_product' }, { id }).pipe(
+    return this.client.send('find_one_product', { id }).pipe(
       catchError((err) => {
         throw new RpcException(err);
       }),
@@ -61,7 +65,7 @@ export class ProductsController {
 
   @Delete(':id')
   deleteProduct(@Param('id') id: string) {
-    return this.client.send({ cmd: 'delete_product' }, { id }).pipe(
+    return this.client.send('delete_product', { id }).pipe(
       catchError((err) => {
         throw new RpcException(err);
       }),
@@ -75,7 +79,7 @@ export class ProductsController {
   ) {
     return this.client
       .send(
-        { cmd: 'update_product' },
+        'update_product',
         {
           id,
           ...updateProductDto,
