@@ -3,7 +3,7 @@ replicaCount: 1
 env:
   NODE_ENV: development
   PORT: "3000"
-  NATS_SERVERS: "nats://nats"
+  NATS_SERVERS: "nats://nats.nats.svc.cluster.local:4222"
 
 resources:
   requests:
